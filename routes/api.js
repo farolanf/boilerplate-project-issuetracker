@@ -27,7 +27,12 @@ module.exports = function (app) {
 
       .post(function (req, res){
         var project = req.params.project;
-        const { 
+        const { issue_title, issue_text, created_by, assigned_to, status_text } = req.params
+        if ((!issue_title || issue_title.trim() === '') ||
+            (!issue_text || issue_text.trim() === '') ||
+            (!created_by || created_by.trim() === '')) {
+          res.sendStatus(400)
+        }
       })
 
       .put(function (req, res){
