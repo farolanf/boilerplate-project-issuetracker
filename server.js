@@ -7,7 +7,7 @@ var cors        = require('cors');
 var helmet      = require('helmet');
 
 var MongoClient = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
+var ObjectId    = require('mongodb').ObjectID;
 
 var apiRoutes         = require('./routes/api.js');
 var fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //For FCC testing purposes
 fccTestingRoutes(app);
 
-  //Sample front-end
+//Sample front-end
 app.route('/:project/')
   .get(function (req, res) {
     res.sendFile(process.cwd() + '/views/issue.html');
@@ -53,7 +53,7 @@ MongoClient.connect(process.env.DB, (err, db) => {
     throw err
     return
   }
-  console.log('database connected')
+  console.log('Database connected')
 
   //Routing for API 
   apiRoutes(app, db)
