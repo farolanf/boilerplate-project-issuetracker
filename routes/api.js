@@ -9,16 +9,23 @@
 'use strict';
 
 var expect = require('chai').expect;
-var MongoClient = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
 
-const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
-
-module.exports = function (app) {
+module.exports = function (app, cb) {
   
   MongoClient.connect(CONNECTION_STRING, (err, db) => {
-    console.log('database connected')
-    
+
+    //Sample front-end
+    app.route('/:project/')
+      .get(function (req, res) {
+        res.sendFile(process.cwd() + '/views/issue.html');
+      });
+
+    //Index page (static HTML)
+    app.route('/')
+      .get(function (req, res) {
+        res.sendFile(process.cwd() + '/views/index.html');
+      });
+
     app.route('/api/issues/:project')
 
       .get(function (req, res){
@@ -28,7 +35,7 @@ module.exports = function (app) {
 
       .post(function (req, res){
         var project = req.params.project;
-        const { issue_title, issue_text, created_by, assigned_to, status_text } = req.params
+        const { issue_title, issue_text, created_by, assigned_to, status_text } = req.body
         if ((!issue_title || issue_title.trim() === '') ||
             (!issue_text || issue_text.trim() === '') ||
             (!created_by || created_by.trim() === '')) {
@@ -56,5 +63,7 @@ module.exports = function (app) {
         var project = req.params.project;
 
       });
+    
+    cb()
   });    
 };
