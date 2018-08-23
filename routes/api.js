@@ -31,8 +31,18 @@ module.exports = function (app) {
         if ((!issue_title || issue_title.trim() === '') ||
             (!issue_text || issue_text.trim() === '') ||
             (!created_by || created_by.trim() === '')) {
-          res.sendStatus(400)
+          return res.sendStatus(400)
         }
+        db.collection('issues').insertOne({
+          issue_title,
+          issue_text,
+          created_by,
+          assigned_to,
+          status_text
+        }, (err, r) => {
+          if (err) return res.sendStatus(500)
+          return res.json(r.ops[0])
+        })
       })
 
       .put(function (req, res){
