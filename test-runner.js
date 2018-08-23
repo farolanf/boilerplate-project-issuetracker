@@ -35,6 +35,7 @@ var Mocha = require('mocha'),
 var mocha = new Mocha();
 var testDir = './tests'
 
+mocha.timeout(5000)
 
 // Add each .js file to the mocha instance
 fs.readdirSync(testDir).filter(function(file){
