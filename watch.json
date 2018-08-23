@@ -1,3 +1,9 @@
 {
+  "restart": {
+    "include": [
+      "\\.js$",
+      "\\.json$"
+    ]
+  },
   "throttle": 300
 }
