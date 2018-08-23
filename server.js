@@ -36,17 +36,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //For FCC testing purposes
 fccTestingRoutes(app);
 
+  //Sample front-end
+app.route('/:project/')
+  .get(function (req, res) {
+    res.sendFile(process.cwd() + '/views/issue.html');
+  });
+
+//Index page (static HTML)
+app.route('/')
+  .get(function (req, res) {
+    res.sendFile(process.cwd() + '/views/index.html');
+  });
+
 MongoClient.connect(process.env.DB, (err, db) => {
   if (err) {
     throw err
     return
   }
   console.log('database connected')
-})
 
-//Routing for API 
-apiRoutes(app, () => {
-  
+  //Routing for API 
+  apiRoutes(app, db)
+
   //404 Not Found Middleware
   app.use(function(req, res, next) {
     res.status(404)
@@ -70,6 +81,6 @@ apiRoutes(app, () => {
       }, 3500);
     }
   });
-});  
-    
+})
+
 module.exports = app; //for testing

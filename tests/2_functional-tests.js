@@ -41,11 +41,36 @@ suite('Functional Tests', function() {
       });
       
       test('Required fields filled in', function(done) {
-        
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'Title2',
+            issue_text: 'text2',
+            created_by: 'dev2'
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 200)
+            assert.equal(res.body.project, 'test')          
+            assert.equal(res.body.issue_title, 'Title2')
+            assert.equal(res.body.issue_text, 'text2')
+            assert.equal(res.body.created_by, 'dev2')
+            assert.equal(res.body.assigned_to, '')
+            assert.equal(res.body.status_text, '')
+            done()
+          })
       });
       
       test('Missing required fields', function(done) {
-        
+        const requiredFields = ['issue_title', 'issue_text', 'created_by']
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_text: 'text2',
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 400)
+            done()
+          })
       });
       
     });
