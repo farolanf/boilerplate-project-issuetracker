@@ -62,15 +62,16 @@ suite('Functional Tests', function() {
       
       test('Missing required fields', function(done) {
         const requiredFields = ['issue_title', 'issue_text', 'created_by']
-        chai.request(server)
-          .post('/api/issues/test')
-          .send({
-            issue_text: 'text2',
-          })
-          .end((err, res) => {
-            assert.equal(res.status, 400)
-            done()
-          })
+        let count = 0
+        requiredFields.forEach(field => {
+          chai.request(server)
+            .post('/api/issues/test')
+            .send({ [field]: 'text' })
+            .end((err, res) => {
+              assert.equal(res.status, 400)
+              if (count++ >= requiredFields.length) done()
+            })
+        })
       });
       
     });
