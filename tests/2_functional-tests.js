@@ -69,8 +69,7 @@ suite('Functional Tests', function() {
             .send({ [field]: 'text' })
             .end((err, res) => {
               assert.equal(res.status, 400)
-              if (count++ >= requiredFields.length) {
-                console.log('done')
+              if (++count >= requiredFields.length) {
                 done()
               }
             })
