@@ -33,7 +33,10 @@ module.exports = function (app, db) {
         issue_text,
         created_by,
         assigned_to,
-        status_text
+        status_text,
+        created_on: new Date(),
+        updated_on: new Date(),
+        open: true
       }, (err, r) => {
         if (err) return res.sendStatus(500)
         return res.json(r.ops[0])

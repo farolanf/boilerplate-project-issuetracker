@@ -36,6 +36,9 @@ suite('Functional Tests', function() {
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in')          
           assert.equal(res.body.assigned_to, 'Chai and Mocha')          
           assert.equal(res.body.status_text, 'In QA')          
+          assert.property(res.body, 'created_on')          
+          assert.property(res.body, 'updated_on')          
+          assert.equal(res.body.open, true)          
           done();
         });
       });
@@ -56,6 +59,9 @@ suite('Functional Tests', function() {
             assert.equal(res.body.created_by, 'dev2')
             assert.equal(res.body.assigned_to, '')
             assert.equal(res.body.status_text, '')
+            assert.property(res.body, 'created_on')          
+            assert.property(res.body, 'updated_on')          
+            assert.equal(res.body.open, true)          
             done()
           })
       });
@@ -80,12 +86,25 @@ suite('Functional Tests', function() {
     
     suite('PUT /api/issues/{project} => text', function() {
       
+      this.beforeAll('Add a
+      
       test('No body', function(done) {
-        
+        chai.request(server)
+          .put('/api/issues/test')
+          .end((err, res) => {
+            assert.equal(res.body, 'no updated field sent')
+            done()
+          })
       });
       
       test('One field to update', function(done) {
-        
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({ _id: 
+          .end((err, res) => {
+            assert.equal(res.body, 'no updated field sent')
+            done()
+          })
       });
       
       test('Multiple fields to update', function(done) {
