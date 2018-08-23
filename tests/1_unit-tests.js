@@ -8,6 +8,7 @@
 
 var chai = require('chai');
 
+/* global suite test */
 suite('Unit Tests', function(){
 
 //none requiered

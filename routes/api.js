@@ -17,7 +17,8 @@ const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRIN
 module.exports = function (app) {
   
   MongoClient.connect(CONNECTION_STRING, (err, db) => {
-
+    console.log('database connected')
+    
     app.route('/api/issues/:project')
 
       .get(function (req, res){
@@ -34,6 +35,7 @@ module.exports = function (app) {
           return res.sendStatus(400)
         }
         db.collection('issues').insertOne({
+          project,
           issue_title,
           issue_text,
           created_by,

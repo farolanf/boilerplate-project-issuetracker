@@ -5,6 +5,7 @@ dependencies:
   cors: 2.8.4
   express: 4.16.3
   helmet: 3.13.0
+  lodash: 4.17.10
   mocha: 3.5.3
   mongodb: 2.2.36
   zombie: 5.0.8
@@ -876,6 +877,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
+  /lodash/4.17.10:
+    dev: false
+    resolution:
+      integrity: sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg==
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -1516,6 +1521,7 @@ specifiers:
   cors: ^2.8.1
   express: ^4.14.0
   helmet: ^3.1.0
+  lodash: latest
   mocha: ^3.2.0
   mongodb: ^2.2.16
   zombie: ^5.0.5
