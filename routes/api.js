@@ -93,7 +93,7 @@ module.exports = function (app, db) {
     .delete(function (req, res){
       var project = req.params.project;
       const { _id } = req.body
-      console.log('delete', _id)
+      console.log('_id', _id)
       if (!_id || _id.trim() === '') {
         return res.status(400).send('_id error')
       }

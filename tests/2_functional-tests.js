@@ -255,7 +255,7 @@ suite('Functional Tests', function() {
 
       test('No _id', function(done) {
         chai.request(server)
-          .delete('/api/issues/test')
+          .del('/api/issues/test')
           .send({})
           .end((err, res) => {
             assert.equal(res.status, 400)
@@ -266,8 +266,8 @@ suite('Functional Tests', function() {
       
       test('Valid _id', function(done) {
         chai.request(server)
-          .delete('/api/issues/test')
-          .query({ _id })
+          .del('/api/issues/test')
+          .send({ _id })
           .end((err, res) => {
             assert.equal(res.status, 200)
             assert.equal(res.text, 'deleted ' + _id)
