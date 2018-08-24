@@ -14,26 +14,24 @@ var mongo = require('mongodb')
 
 chai.use(chaiHttp);
 
-/* global after before suite test */
+/* global before afterEach suite test */
+
+let db
+
+before('Connect to db', function(done) {
+  mongo.connect(process.env.DB, (err, _db) => {
+    if (err) throw err
+    db = _db
+    done()
+  })
+})
+
+afterEach('Delete test data', function(done) {
+  db.collection('issues').deleteMany({ project: 'test' }, done)
+})
 
 suite('Functional Tests', function() {
 
-    let db
-    
-    this.beforeAll('Connect to db', function(done) {
-      mongo.connect(process.env.DB, (err, _db) => {
-        db = _db
-        done()
-      })
-    })
-  
-    this.afterAll('Disconnect db', function() {
-      db && db.collection('issues').deleteMany({ project: 'test' }, err => {
-        console.log('Test project deleted')
-        db.close()
-      })
-    })
-  
     suite('POST /api/issues/{project} => object with issue data', function() {
       
       test('Every field filled in', function(done) {
@@ -106,14 +104,16 @@ suite('Functional Tests', function() {
       
       let _id
       
-      this.beforeAll('Prepare some data', function(done) {
-        db.collection('issues').
-        done()
+      this.beforeEach('Prepare some data', function(done) {
+        db.collection('issues').insertOne({ project: 'test' }, (err, res) => {
+          _id = res.insertedId
+          done()
+        })
       })
       
       test('No body', function(done) {
         chai.request(server)
-          .put('/api/issues/test')
+          .put('/api/issues/test') 
           .end((err, res) => {
             assert.equal(res.body, 'no updated field sent')
             done()
