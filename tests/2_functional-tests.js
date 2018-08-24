@@ -10,10 +10,17 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+var mongo = require('mongo')
+
+/* global after suite test */
+after('Delete test project', function (done) {
+  mongo.connect(process.env.DB, db => {
+    db.collection('issues').find({ project: 'test' })
+  })
+})
 
 chai.use(chaiHttp);
 
-/* global suite test */
 suite('Functional Tests', function() {
   
     suite('POST /api/issues/{project} => object with issue data', function() {
@@ -86,7 +93,11 @@ suite('Functional Tests', function() {
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      this.beforeAll('Add a
+      let _id
+      
+      this.beforeAll('Prepare some data', function(done) {
+        
+      })
       
       test('No body', function(done) {
         chai.request(server)
@@ -100,7 +111,7 @@ suite('Functional Tests', function() {
       test('One field to update', function(done) {
         chai.request(server)
           .put('/api/issues/test')
-          .send({ _id: 
+          .send({ _id }) 
           .end((err, res) => {
             assert.equal(res.body, 'no updated field sent')
             done()
