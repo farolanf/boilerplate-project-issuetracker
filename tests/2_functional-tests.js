@@ -156,7 +156,7 @@ suite('Functional Tests', function() {
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
       
-      this.beforeAll('Prepare some data', function (done) {
+      this.beforeEach('Prepare some data', function (done) {
         const issues = [
           {
             issue_title: 'title',
@@ -176,7 +176,6 @@ suite('Functional Tests', function() {
             .send(issue)
             .end((err, res) => {
               if (++count >= issues.length) {
-                console.log('data prep
                 done()
               }
             })
@@ -219,22 +218,68 @@ suite('Functional Tests', function() {
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        assert.fail()
-        done()
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ issue_title: 'title10', issue_text: 'text10', created_by: 'me10' })
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.isAtLeast(res.body.length, 1);
+            assert.equal(res.body[0].issue_title, 'title10')
+            assert.equal(res.body[0].issue_text, 'text10')
+            assert.equal(res.body[0].created_by, 'me10')
+            done();
+          });
       });
       
     });
     
     suite('DELETE /api/issues/{project} => text', function() {
+
+      let _id
       
+      this.beforeEach('Prepare some data', function(done) {
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'title',
+            issue_text: 'text',
+            created_by: 'me'
+          })
+          .end((err, data) => {
+            if (err) throw err
+            _id = data._id
+            done()
+          })
+      })
+
       test('No _id', function(done) {
-        assert.fail()
-        done()
+        chai.request(server)
+          .delete('/api/issues/test')
+          .send({})
+          .end((err, res) => {
+            assert.equal(res.status, 400)
+            assert.equal(res.text, '_id error')
+            done()
+          })
       });
       
       test('Valid _id', function(done) {
-        assert.fail()
-        done()
+        chai.request(server)
+          .delete('/api/issues/test')
+          .send({ _id })
+          .end((err, res) => {
+            assert.equal(res.status, 200)
+            assert.equal(res.text, 'success')
+            chai.request(server)
+              .get('/api/issues/test')
+              .query({ _id })
+              .end((err, res) => {
+                assert.equal(res.status, 200)
+                assert.equal(res.body.length, 0)
+                done()
+              })
+          })
       });
       
     });

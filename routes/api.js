@@ -29,10 +29,8 @@ module.exports = function (app, db) {
           ].includes(key) && typeof val !== 'undefined'
       })
       query.project = project
-      console.log('q', query)
       db.collection('issues').find(query).toArray((err, list) => {
         if (err) return res.sendStatus(500)
-      console.log('list', list)
         res.json(list)
       })
     })
@@ -94,6 +92,7 @@ module.exports = function (app, db) {
 
     .delete(function (req, res){
       var project = req.params.project;
-
+      const { _id } = req.body
+      db.collection
     });
 };
