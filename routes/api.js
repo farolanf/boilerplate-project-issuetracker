@@ -54,7 +54,24 @@ module.exports = function (app, db) {
           typeof open === 'undefined') {
         return res.status(400).send('no updated field sent')
       }
-      res.sendStatus(200)
+      db.collection('issues').findAndModify(
+        { _id },
+        {},
+        {
+          issue_title,
+          issue_text,
+          created_by,
+          assigned_to,
+          status_text,
+          open,
+          updated_on: new Date()
+        },
+        { new: true },          
+        (err, r) => {
+          if (err) return res.sendStatus(500)
+          if (!r.ok) return res.status(200).send('could not update ' + _id)
+          res.status(200).send('successfully updated')
+        })
     })
 
     .delete(function (req, res){

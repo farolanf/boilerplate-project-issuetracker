@@ -116,9 +116,8 @@ suite('Functional Tests', function() {
           .put('/api/issues/test')
           .send({})
           .end((err, res) => {
-          console.log('res',
             assert.equal(res.status, 400)
-            assert.equal(res.body, 'no updated field sent')
+            assert.equal(res.text, 'no updated field sent')
             done()
           })
       });
@@ -128,7 +127,8 @@ suite('Functional Tests', function() {
           .put('/api/issues/test')
           .send({ _id, issue_title: 'title3' }) 
           .end((err, res) => {
-            assert.equal(res.body, 'successfully updated')
+            assert.equal(res.status, 200)
+            assert.equal(res.text, 'successfully updated')
             done()
           })
       });
@@ -138,7 +138,8 @@ suite('Functional Tests', function() {
           .put('/api/issues/test')
           .send({ _id, issue_title: 'title4', issue_text: 'text4' }) 
           .end((err, res) => {
-            assert.equal(res.body, 'successfully updated')
+            assert.equal(res.status, 200)
+            assert.equal(res.text, 'successfully updated')
             done()
           })
       });
