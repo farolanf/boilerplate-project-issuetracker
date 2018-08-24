@@ -10,12 +10,18 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
-var mongo = require('mongo')
+var mongo = require('mongodb')
 
 /* global after suite test */
 after('Delete test project', function (done) {
-  mongo.connect(process.env.DB, db => {
-    db.collection('issues').find({ project: 'test' })
+  console.log('after tests')
+  mongo.connect(process.env.DB, (err, db) => {
+    if (err) throw err
+    db.collection('issues').deleteMany({ project: 'test' }, err => {
+      console.log('Test project issues deleted')
+      db.close()
+      done()
+    })
   })
 })
 

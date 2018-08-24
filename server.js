@@ -49,10 +49,7 @@ app.route('/')
   });
 
 MongoClient.connect(process.env.DB, (err, db) => {
-  if (err) {
-    throw err
-    return
-  }
+  if (err) throw err
   console.log('Database connected')
 
   //Routing for API 
