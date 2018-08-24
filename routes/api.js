@@ -94,6 +94,7 @@ module.exports = function (app, db) {
       var project = req.params.project;
       const { _id } = req.body
       console.log('_id', _id)
+      console.log(req.params, req.query, req.body)
       if (!_id || _id.trim() === '') {
         return res.status(400).send('_id error')
       }

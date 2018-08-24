@@ -248,12 +248,14 @@ suite('Functional Tests', function() {
           })
           .end((err, data) => {
             if (err) throw err
+            console.log('data created')
             _id = data._id
             done()
           })
       })
 
       test('No _id', function(done) {
+        console.log('using _id', _id)
         chai.request(server)
           .del('/api/issues/test')
           .send({})
@@ -265,6 +267,7 @@ suite('Functional Tests', function() {
       });
       
       test('Valid _id', function(done) {
+        console.log('using _id', _id)
         chai.request(server)
           .del('/api/issues/test')
           .send({ _id })
