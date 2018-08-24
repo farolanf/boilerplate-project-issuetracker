@@ -93,6 +93,14 @@ module.exports = function (app, db) {
     .delete(function (req, res){
       var project = req.params.project;
       const { _id } = req.body
-      db.collection
+      console.log('delete', _id)
+      if (!_id || _id.trim() === '') {
+        return res.status(400).send('_id error')
+      }
+      db.collection('issues').deleteOne({ _id }, (err, r) => {
+        if (err) return res.sendStatus(500)
+        if (!r.result.ok) return res.status(200).send('could not delete _id ' + _id)
+        res.status(200).send('deleted ' + _id)
+      })
     });
 };

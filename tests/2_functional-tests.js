@@ -270,7 +270,7 @@ suite('Functional Tests', function() {
           .send({ _id })
           .end((err, res) => {
             assert.equal(res.status, 200)
-            assert.equal(res.text, 'success')
+            assert.equal(res.text, 'deleted ' + _id)
             chai.request(server)
               .get('/api/issues/test')
               .query({ _id })
