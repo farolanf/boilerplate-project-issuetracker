@@ -17,17 +17,22 @@ module.exports = function (app, db) {
 
     .get(function (req, res){
       var project = req.params.project;
-      const query = _.pickBy(req.body, [
-        '_id',
-        'issue_title', 
-        'issue_text', 
-        'created_by', 
-        'assigned_to', 
-        'status_text', 
-        'open'], val => typeof val !== 'undefined')
+      const query = _.pickBy(req.query, (val, key) => { 
+        return [
+            '_id',
+            'issue_title', 
+            'issue_text', 
+            'created_by', 
+            'assigned_to', 
+            'status_text', 
+            'open'
+          ].includes(key) && typeof val !== 'undefined'
+      })
       query.project = project
+      console.log('q', query)
       db.collection('issues').find(query).toArray((err, list) => {
         if (err) return res.sendStatus(500)
+      console.log('list', list)
         res.json(list)
       })
     })

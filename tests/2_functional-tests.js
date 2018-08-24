@@ -173,13 +173,12 @@ suite('Functional Tests', function() {
         issues.forEach(issue => {
           chai.request(server)
             .post('/api/issues/test')
-            .send({
-              issue_title: issue.issue_title,
-              issue_text: issue.issue_text,
-              created_by: issue.created_by
-            })
+            .send(issue)
             .end((err, res) => {
-              if (++count >= issues.length) done()
+              if (++count >= issues.length) {
+                console.log('data prep
+                done()
+              }
             })
         })
       })
@@ -211,9 +210,10 @@ suite('Functional Tests', function() {
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.isArray(res.body);
+            assert.isAtLeast(res.body.length, 1);
             assert.equal(res.body[0].issue_title, 'title10')
-            assert.equal(res.body[0].issue_text, 'itle10')
-            assert.equal(res.body[0].created_by, 'title10')
+            assert.equal(res.body[0].issue_text, 'text10')
+            assert.equal(res.body[0].created_by, 'me10')
             done();
           });
       });
