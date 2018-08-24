@@ -16,7 +16,21 @@ module.exports = function (app, db) {
 
     .get(function (req, res){
       var project = req.params.project;
-
+      const { _id, issue_title, issue_text, created_by, assigned_to, status_text, open } = req.body
+      db.collection('issues').find({
+        project,
+        _id,
+        issue_title,
+        issue_text,
+        created_by,
+        assigned_to,
+        status_text,
+        open
+      }).toArray((err, list) => {
+        if (err) return res.sendStatus(500)
+        console.log(list)
+        res.json(list)
+      })
     })
 
     .post(function (req, res){
