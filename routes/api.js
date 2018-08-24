@@ -45,7 +45,8 @@ module.exports = function (app, db) {
 
     .put(function (req, res){
       var project = req.params.project;
-
+      const { _id, issue_title, issue_text, created_by, assigned_to, status_text, open } = req.body
+      
     })
 
     .delete(function (req, res){

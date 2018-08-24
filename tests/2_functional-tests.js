@@ -102,7 +102,7 @@ suite('Functional Tests', function() {
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      let _id
+      let _id 
       
       this.beforeEach('Prepare some data', function(done) {
         db.collection('issues').insertOne({ project: 'test' }, (err, res) => {
@@ -113,7 +113,8 @@ suite('Functional Tests', function() {
       
       test('No body', function(done) {
         chai.request(server)
-          .put('/api/issues/test') 
+          .put('/api/issues/test')
+          .send({})
           .end((err, res) => {
             assert.equal(res.body, 'no updated field sent')
             done()
@@ -123,15 +124,21 @@ suite('Functional Tests', function() {
       test('One field to update', function(done) {
         chai.request(server)
           .put('/api/issues/test')
-          .send({ _id }) 
+          .send({ _id, issue_title: 'title3' }) 
           .end((err, res) => {
-            assert.equal(res.body, 'no updated field sent')
+            assert.equal(res.body, 'successfully updated')
             done()
           })
       });
       
       test('Multiple fields to update', function(done) {
-        
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({ _id, issue_title: 'title4', issue_text: 'text4' }) 
+          .end((err, res) => {
+            assert.equal(res.body, 'successfully updated')
+            done()
+          })
       });
       
     });
@@ -159,11 +166,13 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        
+        assert.fail()
+        done()
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
+        assert.fail()
+        done()
       });
       
     });
@@ -171,11 +180,13 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
-        
+        assert.fail()
+        done()
       });
       
       test('Valid _id', function(done) {
-        
+        assert.fail()
+        done()
       });
       
     });
