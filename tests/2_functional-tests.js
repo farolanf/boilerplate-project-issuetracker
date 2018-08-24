@@ -12,8 +12,11 @@ var assert = chai.assert;
 var server = require('../server');
 var mongo = require('mongodb')
 
-/* global after suite test */
-after('Delete test project', function (done) {
+chai.use(chaiHttp);
+
+/* global after before suite test */
+
+before('Delete test project', function (done) {
   console.log('after tests')
   mongo.connect(process.env.DB, (err, db) => {
     if (err) throw err
@@ -25,11 +28,13 @@ after('Delete test project', function (done) {
   })
 })
 
-chai.use(chaiHttp);
-
 suite('Functional Tests', function() {
-  
+
     suite('POST /api/issues/{project} => object with issue data', function() {
+      
+      beforeAll('hello', done => {
+        done()
+      })
       
       test('Every field filled in', function(done) {
        chai.request(server)
