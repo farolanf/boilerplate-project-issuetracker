@@ -17,7 +17,6 @@ module.exports = function (app, db) {
 
     .get(function (req, res){
       var project = req.params.project;
-      const { _id, issue_title, issue_text, created_by, assigned_to, status_text, open } = req.body
       const query = _.pickBy(req.body, [
         '_id',
         'issue_title', 
@@ -27,10 +26,8 @@ module.exports = function (app, db) {
         'status_text', 
         'open'], val => typeof val !== 'undefined')
       query.project = project
-      console.log('query', query)
       db.collection('issues').find(query).toArray((err, list) => {
         if (err) return res.sendStatus(500)
-        console.log(list)
         res.json(list)
       })
     })

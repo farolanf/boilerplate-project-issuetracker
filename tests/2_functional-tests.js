@@ -105,10 +105,18 @@ suite('Functional Tests', function() {
       let _id 
       
       this.beforeEach('Prepare some data', function(done) {
-        db.collection('issues').insertOne({ project: 'test' }, (err, res) => {
-          _id = res.insertedId
-          done()
-        })
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'title',
+            issue_text: 'text',
+            created_by: 'me'
+          })
+          .end((err, data) => {
+            if (err) throw err
+            _id = data._id
+            done()
+          })
       })
       
       test('No body', function(done) {
@@ -148,6 +156,34 @@ suite('Functional Tests', function() {
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
       
+      this.beforeAll('Prepare some data', function (done) {
+        const issues = [
+          {
+            issue_title: 'title',
+            issue_text: 'text',
+            created_by: 'me'
+          },
+          {
+            issue_title: 'title10',
+            issue_text: 'text10',
+            created_by: 'me10'
+          }
+        ]
+        let count = 0
+        issues.forEach(issue => {
+          chai.request(server)
+            .post('/api/issues/test')
+            .send({
+              issue_title: issue.issue_title,
+              issue_text: issue.issue_text,
+              created_by: issue.created_by
+            })
+            .end((err, res) => {
+              if (++count >= issues.length) done()
+            })
+        })
+      })
+      
       test('No filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
@@ -169,8 +205,17 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        assert.fail()
-        done()
+        chai.request(server)
+          .get('/api/issues/test')
+          .query({ issue_title: 'title10' })
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.equal(res.body[0].issue_title, 'title10')
+            assert.equal(res.body[0].issue_text, 'itle10')
+            assert.equal(res.body[0].created_by, 'title10')
+            done();
+          });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
