@@ -267,7 +267,7 @@ suite('Functional Tests', function() {
       test('Valid _id', function(done) {
         chai.request(server)
           .delete('/api/issues/test')
-          .send({ _id })
+          .query({ _id })
           .end((err, res) => {
             assert.equal(res.status, 200)
             assert.equal(res.text, 'deleted ' + _id)
