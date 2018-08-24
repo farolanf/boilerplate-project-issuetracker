@@ -16,25 +16,25 @@ chai.use(chaiHttp);
 
 /* global after before suite test */
 
-before('Delete test project', function (done) {
-  console.log('after tests')
-  mongo.connect(process.env.DB, (err, db) => {
-    if (err) throw err
-    db.collection('issues').deleteMany({ project: 'test' }, err => {
-      console.log('Test project issues deleted')
-      db.close()
-      done()
-    })
-  })
-})
-
 suite('Functional Tests', function() {
 
-    suite('POST /api/issues/{project} => object with issue data', function() {
-      
-      beforeAll('hello', done => {
+    let db
+    
+    this.beforeAll('Connect to db', function(done) {
+      mongo.connect(process.env.DB, (err, _db) => {
+        db = _db
         done()
       })
+    })
+  
+    this.afterAll('Disconnect db', function() {
+      db && db.collection('issues').deleteMany({ project: 'test' }, err => {
+        console.log('Test project deleted')
+        db.close()
+      })
+    })
+  
+    suite('POST /api/issues/{project} => object with issue data', function() {
       
       test('Every field filled in', function(done) {
        chai.request(server)
@@ -107,7 +107,8 @@ suite('Functional Tests', function() {
       let _id
       
       this.beforeAll('Prepare some data', function(done) {
-        
+        db.collection('issues').
+        done()
       })
       
       test('No body', function(done) {
