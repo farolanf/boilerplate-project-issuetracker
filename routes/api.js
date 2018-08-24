@@ -46,14 +46,15 @@ module.exports = function (app, db) {
     .put(function (req, res){
       var project = req.params.project;
       const { _id, issue_title, issue_text, created_by, assigned_to, status_text, open } = req.body
-      if (issue_title === undefined &&
-          issue_text === undefined &&
-          created_by === undefined &&
-          assigned_to === undefined &&
-          status_text === undefined &&
-          open === undefined) {
-        res.type('txt').send('no updated field sent')
+      if (typeof issue_title === 'undefined' &&
+          typeof issue_text === 'undefined' &&
+          typeof created_by === 'undefined' &&
+          typeof assigned_to === 'undefined' &&
+          typeof status_text === 'undefined' &&
+          typeof open === 'undefined') {
+        return res.status(400).send('no updated field sent')
       }
+      res.sendStatus(200)
     })
 
     .delete(function (req, res){

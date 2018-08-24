@@ -116,6 +116,8 @@ suite('Functional Tests', function() {
           .put('/api/issues/test')
           .send({})
           .end((err, res) => {
+          console.log('res',
+            assert.equal(res.status, 400)
             assert.equal(res.body, 'no updated field sent')
             done()
           })
